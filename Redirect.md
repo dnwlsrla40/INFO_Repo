@@ -52,3 +52,11 @@ redirect02.jsp
 ![Redirect Network](/picture/Redirect_Network.JPG)
 
 또한, 위 그림처럼 Network탭을 통하여 redirect01.jsp 요청을 수행후에 코드에 따라 redirect02.jsp로 이동한 것을 볼 수 있다.
+
+## Redirect와 Forward 차이점
+
+Redirect는 클라이언트가 서버에게 요청을 하여 서버가 요청할 곳을 알려주면서 다시 요청 -> 따라서 URL이 변화
+
+[Forward](https://github.com/dnwlsrla40/INFO_Repo/blob/master/Forward.md)는 클라이언트가 한 요청에 서버가 판단하여 다른 back에게 처리를 맡기는 것으로 클라이언트는 서버가 어떻게 처리하는 지 모름 -> URL 변화 X
+
+따라서 Redirect는 request response 객체가 2개 생성되고, Forward는 1개 생성된다.
