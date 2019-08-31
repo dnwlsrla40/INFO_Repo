@@ -82,7 +82,7 @@ NextServlet.jsp (JSP 파일) 의 body
 
 ## Redirect와 Forward 차이점
 
-Redirect는 클라이언트가 서버에게 요청을 하여 서버가 요청할 곳을 알려주면서 다시 요청 -> 따라서 URL이 변화
+[Redirect](https://github.com/dnwlsrla40/INFO_Repo/blob/master/Redirect.md)는 클라이언트가 서버에게 요청을 하여 서버가 요청할 곳을 알려주면서 다시 요청 -> 따라서 URL이 변화
 
 Forward는 클라이언트가 한 요청에 서버가 판단하여 다른 back에게 처리를 맡기는 것으로 클라이언트는 서버가 어떻게 처리하는 지 모름 -> URL 변화 X
 
