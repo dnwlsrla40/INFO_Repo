@@ -49,3 +49,15 @@ public class TenServlet extends HttpServlet {
 2. 없으면 해당 서블릿을 메모리에 올리고(생성자) init() 메소드를 실행
 3. 그후 service() 메소드를 실행 -> 즉 init() 후 새로고침 해도 service()메소드만 실행한다.
 4. WAS가 종료되거나 웹 어플리케이션이 변경되면 destroy() 메소드 실행
+
+## Servlet과 JSP 연동
+
+Servlet은 자바 파일이므로 자바 코드를 사용하여 프로그램 로직을 구현하는데 용이하다 그에 반해 [JSP](https://github.com/dnwlsrla40/INFO_Repo/blob/master/JSP.md)는 자바 코드를 쓰기 위해선 스크립트릿(`<% %>`)이나 선언문(`<%! %>`)을 사용해야 한다.
+
+반대로, Servlet은 HTML 페이지를 구현하려면 `out.print()`에서 문자열로 html태그 들을 넣어서 출력하여야 한다. 그에 반해 서블릿은 HTML과 Java 코드를 분리하여 기존의 HTML 코드를 이용하면 쉽게 구현할 수 있다.
+
+따라서, 이런 Servlet과 JSP의 장단점을 해결하기 위해 Servlet에서는 프로그램 로직을 수행하게 하고 그 결과를 JSP에서 출력하는 방식이 좋다.
+
+즉, Servlet에서 프로그램 로직을 수행하고 그 결과를 Request 객체에 넣어 JSP로 포워딩을 하는 것이 좋다.
+
+이것을 JSP와 Servlet 연동이라고 한다.
