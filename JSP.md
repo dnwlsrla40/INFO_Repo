@@ -100,3 +100,15 @@ id : <%= getId() %>
 2. JSP 최초 요청시 JSP 엔진에 의해 JSP 코드가 서블릿 코드로 변환(java 파일 생성)
 3. 서블릿 코드를 컴파일 해서 실행가능한 bytecode로 변환(class 파일 생성)
 4. 서블릿이 실행되어 요청에 대한 응답 정보를 생성
+
+## Servlet과 JSP 연동
+
+[Servlet](https://github.com/dnwlsrla40/INFO_Repo/blob/master/Servlet.md)은 자바 파일이므로 자바 코드를 사용하여 프로그램 로직을 구현하는데 용이하다 그에 반해 JSP는 자바 코드를 쓰기 위해선 스크립트릿(`<% %>`)이나 선언문(`<%! %>`)을 사용해야 한다.
+
+반대로, Servlet은 HTML 페이지를 구현하려면 `out.print()`에서 문자열로 html태그 들을 넣어서 출력하여야 한다. 그에 반해 서블릿은 HTML과 Java 코드를 분리하여 기존의 HTML 코드를 이용하면 쉽게 구현할 수 있다.
+
+따라서, 이런 Servlet과 JSP의 장단점을 해결하기 위해 Servlet에서는 프로그램 로직을 수행하게 하고 그 결과를 JSP에서 출력하는 방식이 좋다.
+
+즉, Servlet에서 프로그램 로직을 수행하고 그 결과를 Request 객체에 넣어 JSP로 포워딩을 하는 것이 좋다.
+
+이것을 JSP와 Servlet 연동이라고 한다.
