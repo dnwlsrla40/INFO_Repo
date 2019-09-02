@@ -28,3 +28,9 @@ JSP에서는 EL(Expression Language)라고하는 표현언어를 통해서 사�
 를 선언해준다.
 
 이로써 사용 준비는 다 끝났고 나머지는 각 코드의 <%=%> 부분 대신 ${변수 이름}을 사용해주면 된다.
+
+## 과정 1 (List 요청 시)
+
+### 흐름도
+
+list.do 요청 -> web.xml에서 url 파악후 ControllerAction 전달 -> ControllerAction에서 url 분석 후 list 관련이니  ListAction으로 전달 -> ListAction에서 Model로 게시판 전체목록 쿼리 실행하기 위해 BoardDao 실행 -> BoardDao에서 DB 접속을 위해 CommonDao(공통 DB 접속, 종료 객체) 실행 -> 받아온 결과 값으로 view로 반환(.jsp)
