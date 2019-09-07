@@ -5,7 +5,8 @@
 [1.Servlet](#Servlet)  
 [2.작성방법](#작성방법)  
    - [Servlet 3.0 이상에서 사용방법](#Servlet-3.0-이상에서-사용방법)
-   - [Servlet 3.0 미만에서 사용방법](#Servlet-3.0-미만에서-사용방법)  
+   - [Servlet 3.0 미만에서 사용방법](#Servlet-3.0-미만에서-사용방법)   
+
 [3. 서블릿 생명주기](#서블릿-생명주기)  
 [4. Servlet과 JSP 연동](#Servlet과-JSP-연동)   
 
