@@ -112,3 +112,20 @@ id : <%= getId() %>
 즉, Servlet에서 프로그램 로직을 수행하고 그 결과를 Request 객체에 넣어 JSP로 포워딩을 하는 것이 좋다.
 
 이것을 JSP와 Servlet 연동이라고 한다.
+
+하지만 JSP에서 HTML 코드를 출력할 때도 Servlet에서 받아온 값을 가공할 때 JAVA 코드를 사용하게 되어 불가피하게 스크립트릿을 사용하게 된다. 또한, HTML 코드 사이사이에 JSP 코드가 섞여 있는 것은 코드의 가독성을 떨어트리게 되어 후에 EL(표현언어)라던가 jstl을 이용하여 표현을 간편하게 하게 된다.
+
+```
+JSP 스크립트릿 코드
+
+<%
+	int sum = (Integer)request.getAttribute("sum");
+	int num1 = (Integer)request.getAttribute("num1");
+	int num2 = (Integer)request.getAttribute("num2");
+%>
+<%=num1 %> + <%=num2 %> = <%= sum %>
+
+EL jstl 코드
+
+${num1} + ${num2} = ${sum}
+```
