@@ -48,7 +48,9 @@ JSTL은 JSP 페이지에서 조건문 처리, 반복문 처리 등을 html tag�
 - 접두어 : c
 - URI : http://java.sun.com/jsp/jstl/core
 
-ex) 변수 사용
+ex) 변수 사용(set) 및 제거(remove)
+
+1. 일반 변수
 
 ```
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
@@ -67,6 +69,20 @@ ex) 변수 사용
 </body>
 </html>
 ```
+
+2. 객체 프로퍼티 혹은 맵
+
+```
+
+<c:set target="${some(객체 이름)}" property="propertyName(프로퍼티 이름)" value="anyValue(변수 이름)" />
+```
+
+some 객체가 자바빈일 경우: some.setPropertyName(anyvalue)  
+some 객체가 맵(map)일 경우 : some.put(propertyName,anyvalue);
+
+
+
+
 
 ### XML
 
