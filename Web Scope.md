@@ -32,7 +32,7 @@ http 요청을 WAS가 받아서 웹 브라우저에게 응답할 때까지 변�
 
 - HttpServletRequest 객체를 사용한다.
 - JSP는 request 내장 변수, 서블릿에서는 HttpServletRequest 객체를 사용한다.
-- forward시 값을 유지하고자 사용한다.
+- forward시 값을 유지하고자 사용한다
 - 
 
 
