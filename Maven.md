@@ -70,7 +70,11 @@ examples-1.0-SNAPSHOT.jar
 jar, war, ear등이 해당
 
 6. version  
-   
+프로젝트의 현재 버전  
+프로젝트가 개발 중일 때는 SNAPSHOT을 접미사로 사용  
+
 7. name  
-   
+프로젝트의 이름  
+
 8. url  
+프로젝트 사이트가 있다면 사이트 URL을 등록
