@@ -47,3 +47,58 @@ method signiture
 5. 익명클래스(람다 JAVA) - 동작자체가 함수가 되는 것
 
 reflection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+링크 노트
+
+http://pptbizcam.co.kr/ - ppt
+
+https://d2.naver.com/helloworld - 네이버 D2
+
+https://www.slipp.net/questions/346 - 왕초보 개발자에게
+
+https://medium.com/happyprogrammer-in-jeju/%EA%B0%9C%EC%95%8C%EB%AA%BB%EC%9D%B8-%EB%8B%B9%EC%8B%A0%EC%9D%B4-%EC%9B%B9%EA%B0%9C%EB%B0%9C%
+EC%9D%84-%EC%8B%9C%EC%9E%91%ED%95%9C%EB%8B%A4%EB%A9%B4-1-9415c014a130 - 웹공부 시작 할 때 보기
+
+http://latentflip.com/loupe - 이벤트 루프에 대한 설명
+
+https://www.slipp.net/wiki/pages/viewpage.action?pageId=25529113 - spring boot
+
+https://mdbootstrap.com/docs/jquery/content/icons-list/ - web icon
+
+https://stackoverrun.com/ko/q/8779394 -
+https://stackoverrun.com/ko/q/12715564base64-> img
