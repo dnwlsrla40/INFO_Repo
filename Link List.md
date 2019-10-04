@@ -102,3 +102,15 @@ https://mdbootstrap.com/docs/jquery/content/icons-list/ - web icon
 
 https://stackoverrun.com/ko/q/8779394 -
 https://stackoverrun.com/ko/q/12715564base64-> img
+
+
+
+
+
+
+
+
+
+Rest API
+
+https://www.youtube.com/watch?v=RP_f5dMoHFc
