@@ -1,9 +1,11 @@
 # 직업 관련 파일
 
 **목차**   
-[1. SI (System Integration)](#SI-(System-Integration))  
-[2. SM (System Maintenance)](#SM-(System-Maintenance))  
-[3. 솔루션](#솔루션)  
+[JDBC 사용 방법](#jdbc-사용-방법)  
+[드라이버 로드](#드라이버-로드)  
+[Connection 객체](#connection-%ea%b0%9d%ec%b2%b4)  
+[Statement 생성 및 질의 수행](#statement-생성-및-질의-수행)
+[결과 사용 및 객체 닫기](#결과-사용-및-객체-닫기)
 
 ## **JDBC 사용 방법**
 
