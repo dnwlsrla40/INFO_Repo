@@ -23,7 +23,7 @@ JSTL은 JSP 페이지에서 조건문 처리, 반복문 처리 등을 html tag�
 
 따라서, JSTL을 사용하여 Java 코드를 없애고 프론트 엔드 개발자가 유지보수를 쉽게 할 수 있게 되었다.
 
-## 사용방법
+## 사용 방법
 
 [jar 파일 다운로드](http://tomcat.apache.org/download-taglibs.cgi) 사이트에 가서   
 
