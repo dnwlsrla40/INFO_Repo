@@ -1,6 +1,6 @@
 # 직업 관련 파일
 
-목차  
+**목차**  
 [1. SI (System Integration)](#SI-(System-Integration))  
 [2. SM (System Maintenance)](#SM-(System-Maintenance))  
 [3. 솔루션](#솔루션)  
