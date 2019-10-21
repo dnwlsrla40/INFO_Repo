@@ -684,7 +684,7 @@ spring 프로젝트 구동 시 관여하는 XML은 web.xml, root-context.xml, se
 
 ### Web.xml
 
-Tomcat 구동과 관련된 설정
+Tomcat 구동과 관련된 설정을 주로 한다.
 
 프로젝트 실행시 가장 먼저 구동되는 Context Listener가 등록되어 있다.
 
@@ -697,8 +697,16 @@ Tomcat 구동과 관련된 설정
 
 이처럼 context-param에는 root-context.xml의 경로를 설정
 
+Intellij도 web.xml이라 되어있다.
+
 ### root-context.xml
+
+빈에 관한 설정을 주로 한다.
+
+인텔리 제이에선 applicationContext.xml라고 한다.
 
 ### servlet-context.xml
 
-스프링 MVC의 특정한 객체(빈)을 설정
+내부 웹 관련 처리 작업을 설정한다.
+
+Intellij 에선 dispatcher-servlet.xml라고 한다.
