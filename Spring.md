@@ -314,8 +314,22 @@ Class 자동차{
   - 기본적인 Factory
 
 - ApplicationContext 
+  - 컨테이너(레파지토리, 컴포넌트, 서비스)등의 내부에 있는 객체들의 의존성을 관리해준다.
   - BeanFactory의 모든 기능을 포함하며, 일반적으로 BeanFactory보다 추천된다.
   - 트랜잭션처리, AOP등에 대한 처리를 할 수 있다. BeanPostProcessor, BeanFactoryPostProcessor등을 자동으로 등록하고, 국제화 처리, 어플리케이션 이벤트 등을 처리할 수 있다.
+  - 직접 사용하려면 ApplicationContext 자체가 bean으로 등록되어 있으니 `@Autowired - ApplicationContext applicationContext`를 이용해서 사용하면 된다.
+
+  ```
+  @Autowired
+  ApplicationContext applicationContext;
+
+  @GetMapping("/context")
+  public String context(){
+      return "hello" + applicationContext.getBean("빈");
+  }
+  ```
+
+  servlet 3.0 이후 부터 자바코드를 통한(annotation) 설정이 가능해지고, 또한 spring boot가 나오면서 이러한 설정이 기본 제공 설정으로 바뀌면서 보기 힘들어졌다.
 
 ## **스프링의 계층**
 
