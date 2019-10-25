@@ -54,7 +54,7 @@ Frame Work
 
 ### **Bean**
 
-공장이 자동으로 만들어 줄 객체
+공장이 자동으로 만들어 줄 객체 즉, IOC 컨테이너가 관리하는 객체를 말한다.
 
 특징
 1. 기본 생성자를 가지고 있다.
@@ -127,7 +127,7 @@ Engine 객체와 Car객체를 생성해주지 않아도 car.run();을 실행 시
 applicationContext.xml 방식은 새로운 객체가 나올 때마다 등록해주어야하고, ApplicationContext 팩토리(객체) 역시 생성해줘야 하므로 번거롭다.   
 그래서 최근에는 어노테이션과 JAVA Config를 통한 방법을 선호한다.
 
-각각에 필요한 Config Class를 생성한다 여기서는 ApplicationConfig를 생성해준다. 그 후 이 클래스가 Config파일임을 알려주기 위해 @Configuration 어노테이션을 사용한다.
+각각에 필요한 Config Class를 생성한다 여기서는 ApplicationConfig를 생성해준다. 그 후 이 클래스가 Config파일임을 알려주기 위해 **@Configuration 어노테이션을 사용**한다.
 
 ```
 @Configuration
@@ -167,17 +167,21 @@ public static void main(String[] args) {
 }
 ```
 처럼 사용할 수 있다.
+
+### @ComponentScan을 이용한 방법
+
 하지만 위와 같은 코드는 applicationContext.xml보다 편리하지 않아 보인다. 좀 더 다양한 어노테이션을 이용해 더 간결하게 바꿀 수 있다.
 
-@ComponentScan 어노테이션은 컨테이너에게 해당 패키지 내의 어노테이션들을 읽어 빈으로 등록하는 일을 한다.
+@ComponentScan 어노테이션은 컨테이너에게 해당 패키지 내의 어노테이션들을 읽어 빈으로 등록하는 일을 한다. 따라서, 다른 지정이 안된 패키지에 @Component 어노테이션을 붙여도 인식을 하지 못한다.
 
-@ComponentScan 어노테이션이 읽는 어노테이션
+@ComponentScan 어노테이션이 읽는 어노테이션(= 빈이 되는 객체)
 
-1. 컨트롤러
-2. 서비스
-3. 레파지토리
-4. 컴포넌트
-5. etc...
+- Component
+  - Controller
+  - Service
+  - Repository
+
+Controller, Service, Repository는 @Component 어노테이션을 포함하고 있다.
 
 ```[ApplicationConfig.java]
 @Configuration
@@ -224,7 +228,51 @@ public class Car {
 ```
 Car와 Engine을 읽을 수 있도록 @Component 어노테이션을 붙이고, Setter와 Getter 메서드를 통한 객체 생성이 필요없어졌다.
 
+### **빈 꺼내는 방법 - getBean() 이용**
 
+ApplicationContext에서 직접 getBean()으로 직접 꺼내서 사용할 수 있다.
+
+```
+ApplicationContext ac = new  AnnotationConfigApplicationContext(원하는 객체.class);
+
+클래스 타입 클래스 변수 = ac.getBean();
+```
+
+### **빈 꺼내는 방법 - @Autowired 이용**
+
+@Autowired 어노테이션을 이용하여 ApplicationContext의 빈을 사용할 수 있다. 
+
+```
+@Autowired
+String kesuen;
+```
+
+### @Autowired로 의존성 주입 방법, 위치
+
+1. 생성자
+
+기본적으로 스프링은 생성자가 하나만 존재하고 또, 그 생성자에 파라미터로 등록된 빈을 받을 시 @Autowired 어노테이션이 없어도 객체를 생성해준다.
+
+```
+@Controller
+class OwnerController {
+    public OwnerController(OwnerRepository clinicService) {
+    this.owner = clinicService;
+    }
+}
+```
+
+2. 필드
+
+필드에서 등록된 빈을 받을 수 있다.
+```
+@Autowired
+private final OwnerRepository owners;
+```
+
+3. Setter
+
+이 클래스에 빈에 대한 Setter가 있을 경우 필드에 @Autowired를 붙인 것보단 Setter를 통해 @Autowired로 의존성을 주입해주는 것이 좋다.
 
 ## **Spring**
 
