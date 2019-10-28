@@ -103,3 +103,12 @@ mysql> show tables;
 mysql> desc 테이블명;
 ```
 명령어를 사용하면 된다.
+
+## **테이블 삭제**
+
+mysql에서 db를 선택후 테이블을 삭제하는 명령어는 
+
+```
+DROP TABLE 테이블명;
+```
+이다.
