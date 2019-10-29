@@ -54,225 +54,16 @@ Frame Work
 
 ### **Bean**
 
-공장이 자동으로 만들어 줄 객체 즉, IOC 컨테이너가 관리하는 객체를 말한다.
+공장이 자동으로 만들어 줄 객체 즉, IOC 컨테이너가 관리하는 객체를 말한다.  
+스프링에서는 ApplicationContext가 컨테이너이므로 이 ApplicationContext가 관리하는 객체들을 '빈(Bean)'이라는 용어로 부른다. 
+
+빈과 빈 사이의 의존관계를 처리하는 방식으로 1) XML 설정, 2) 어노테이션 설정, Java 설정 방식을 이용할 수 있다.
 
 특징
 1. 기본 생성자를 가지고 있다.
 2. 필드는 private하게 선언한다.
 3. getter, setter 메서드를 가진다.
     - getName(), setName() 메서드가 있다면 name 프로퍼티(property)라고 한다.
-
-### **빈 등록 방법 - applicationContext.xml에 빈을 등록하는 방법** ###
-
-applicationContext.xml 파일을 resource 폴더에 만들어서 등록을 해준다.
-```
-[applicationContext.xml]
-id는 호출될 String이고, class는 연결 시킬 객체의 Class이다.
-<bean id="userBean" class="kr.or.connect.diexamo1.UserBean"/>
-
-[다른 곳에서의 사용 - main]
-public static void main(String[] args) {
-    ApplicationContext ac = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
-    System.out.println("초기화 완료!!");
-    UserBean userBean = (UserBean)ac.getBean("userBean"); // id = userBean 이다. getBean의 리턴형은 Object이므로 형변환 시켜주어야 한다.
-    userBean.setAge(3);
-    System.out.println(userBean.getAge());
-}
-```
-
-Context를 통한 객체 생성은 한번 만 하므로 여러번 객체를 생성하는 것이 아니라 싱글톤 형식으로 동일한 하나의 객체를 만든다.
-따라서, 프로그램이 실행이 될때 Context는 applicationContext.xml에 등록된 빈들을 모두 메모리에 등록하고 다른 곳에서 getBean()등을 사용해서 호출하면, 메모리에 등록된 주소를 참조하여 반환한다.
-
-따라서 다른 객체를 만들어 주려면 아래와 같이 xml을 설정해야 한다.
-
-```
-[application.xml]
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-	<bean id="c" class="kr.or.connect.diexam01.Car">
-		<property name="engine" ref="e"></property>
-	</bean>
-</beans>
-
-[main]
-public static void main(String[] args) {
-    Engine e = new Engine();
-    Car c = new Car();
-    c.setEngine(e);
-    c.run(); 
-}
-```
-
-이처럼 프로퍼티(setter or getter)를 통하여 다른 객체로 등록이 가능하다 setEngine은 파라미터로 (Engine e)를 가지기 때문에 `ref="e"` 속성을 등록하였다.
-
-이러한 방식으로 등록을 하면 main을 위와 같은 형태가 아닌
-```
-public static void main(String[] args) {
-    ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
-    Car car = (Car)ac.getBean("c");
-    car.run();
-}
-```
-이와 같이 작성가능하다.
-
-Engine 객체와 Car객체를 생성해주지 않아도 car.run();을 실행 시킬 수 있다.
-
-![IOC를 통한 객체 주입](./picture/IOC.JPG)
-
-### **빈 등록 방법 - 어노테이션과 Config를 통해 빈을 등록하는 방법** ###
-
-applicationContext.xml 방식은 새로운 객체가 나올 때마다 등록해주어야하고, ApplicationContext 팩토리(객체) 역시 생성해줘야 하므로 번거롭다.   
-그래서 최근에는 어노테이션과 JAVA Config를 통한 방법을 선호한다.
-
-각각에 필요한 Config Class를 생성한다 여기서는 ApplicationConfig를 생성해준다. 그 후 이 클래스가 Config파일임을 알려주기 위해 **@Configuration 어노테이션을 사용**한다.
-
-```
-@Configuration
-public class ApplicationConfig {
-
-}
-```
-
-그 다음으론, Bean을 등록해주어야 한다.
-
-```
-@Configuration
-public class ApplicationConfig {
-    @Bean
-    public Car car(Engine e){
-        Car c = new Car();
-        c.setEngine(e);
-        return c;
-    }
-
-    @Bean
-	public Engine engine() {
-		return new Engine();
-	}
-}
-```
-
-이와 같이 등록하였다면 
-
-```
-[main]
-public static void main(String[] args) {
-    ApplicationContext ac = new AnnotationConfigApplicationContext(ApplicationConfig.class);
-    
-    Car car = (Car)ac.getBean(Car.class);
-    car.run();
-}
-```
-처럼 사용할 수 있다.
-
-### @ComponentScan을 이용한 방법
-
-하지만 위와 같은 코드는 applicationContext.xml보다 편리하지 않아 보인다. 좀 더 다양한 어노테이션을 이용해 더 간결하게 바꿀 수 있다.
-
-@ComponentScan 어노테이션은 컨테이너에게 해당 패키지 내의 어노테이션들을 읽어 빈으로 등록하는 일을 한다. 따라서, 다른 지정이 안된 패키지에 @Component 어노테이션을 붙여도 인식을 하지 못한다.
-
-@ComponentScan 어노테이션이 읽는 어노테이션(= 빈이 되는 객체)
-
-- Component
-  - Controller
-  - Service
-  - Repository
-
-Controller, Service, Repository는 @Component 어노테이션을 포함하고 있다.
-
-```[ApplicationConfig.java]
-@Configuration
-@ComponentScan("kr.or.connect.diexam01")
-public class ApplicationConfig02 {
-
-}
-```
-이렇게 등록을 해주면 컨테이너가 "kr.or.connect.diexam01" 패키지 내의 클래스를 돌며 컨트롤러,서비스,레파지토리,컴포넌트 등의 어노테이션을 읽어 빈으로 등록한다.
-
-그러면 Car와 Engine 클래스도 아래 처럼 간편해진다.
-
-```
-[Engine.java]
-@Component  //Component 어노테이션
-public class Engine {
-	public Engine() {
-		System.out.println("Engine 생성자");
-	}
-	public void exec() {
-		System.out.println("엔진이 동작합니다.");
-	}
-}
-
-[Car.java]
-@Component
-public class Car {
-	@Autowired
-	private Engine v8;
-	
-	public Car() {
-		System.out.println("Car 생성자");
-	}
-	
-//	public void setEngine(Engine e) {
-//		this.v8 = e;
-//	}
-	
-	public void run() {
-		System.out.println("엔진을 이용하여 달립니다.");
-		v8.exec();
-	}
-}
-```
-Car와 Engine을 읽을 수 있도록 @Component 어노테이션을 붙이고, Setter와 Getter 메서드를 통한 객체 생성이 필요없어졌다.
-
-### **빈 꺼내는 방법 - getBean() 이용**
-
-ApplicationContext에서 직접 getBean()으로 직접 꺼내서 사용할 수 있다.
-
-```
-ApplicationContext ac = new  AnnotationConfigApplicationContext(원하는 객체.class);
-
-클래스 타입 클래스 변수 = ac.getBean();
-```
-
-### **빈 꺼내는 방법 - @Autowired 이용**
-
-@Autowired 어노테이션을 이용하여 ApplicationContext의 빈을 사용할 수 있다. 
-
-```
-@Autowired
-String kesuen;
-```
-
-### @Autowired로 의존성 주입 방법, 위치
-
-1. 생성자
-
-기본적으로 스프링은 생성자가 하나만 존재하고 또, 그 생성자에 파라미터로 등록된 빈을 받을 시 @Autowired 어노테이션이 없어도 객체를 생성해준다.
-
-```
-@Controller
-class OwnerController {
-    public OwnerController(OwnerRepository clinicService) {
-    this.owner = clinicService;
-    }
-}
-```
-
-2. 필드
-
-필드에서 등록된 빈을 받을 수 있다.
-```
-@Autowired
-private final OwnerRepository owners;
-```
-
-3. Setter
-
-이 클래스에 빈에 대한 Setter가 있을 경우 필드에 @Autowired를 붙인 것보단 Setter를 통해 @Autowired로 의존성을 주입해주는 것이 좋다.
 
 ## **Spring**
 
@@ -283,6 +74,34 @@ private final OwnerRepository owners;
 - MVC Framework를 제공한다.
 - AOP 지원한다.
 - 도메인 논리 코드와 쉽게 분리될 수 있는 구조를 가지고 있다.
+
+## **Spring 특징**
+
+### **POJO 기반의 구성**
+
+스프링은 다른 프레임워크들과 달리 관계를 구성할 때 별도의 API 등을 사용하지 않는 POJO(Plain Old Java Object)의 구성만으로 가능하도록 제작되어있다. 쉽게 말해서 일반적인 Java 코드를 이용해서 객체를 구성하는 방식을 그대로 스프링에서 사용할 수 있다.
+
+즉, 개발자가 코드를 개발할 때 특정한 라이브러리나 컨테이너의 기술에 종속적이지 않는다. 개발자는 가장 일반적인 형태로 코드를 작성하고 실행할 수 있어 생산성에서도 유리하고, 코드에 대한 테스트 작업 역시 좀 더 유연하게 할 수 있다.
+
+### **의존성 주입(DI)과 스프링
+
+의존성은 하나의 객체가 다른 객체 없이 제대로 된 역할을 할 수 없다는 것을 의미한다. 즉, 의존성 주입은 '어떤 객체가 필요한 객체를 외부에서 제공해주는 것'을 의미한다.
+
+하나의 클래스 내부에서 다른 클래스의 메서드나 필드를 이용하려는 경우 그 사용할 클래스가 인스턴스화 되어있어야 한다. 스프링은 `ApplicationContext`라는 존재가 필요한 객체들을 생성하고, 필요한 객체들을 주입하는 역할을 해준다.
+
+따라서, 스프링을 이용하면 개발자들은 기존의 프로그래밍과 달리 객체와 객체를 분리해서 생성하고, 이러한 객체들을 엮는 작업을 하는 형태의 개발에 집중할 수 있다.
+
+### **AOP의 지원**
+
+프로그래밍에서 중요 원칙 중 하나는 '반복적인 코드의 제거'라고 할 수 있다. 스프링은 프레임워크를 이용한 개발에서 이러한 반복적인 코드를 줄이고, 핵심 비즈니스 로직에만 집중할 수 있는 방법으로 AOP(Aspect Oriented Programming)를 지원한다.
+
+대부분의 시스템이 공통으로 가지고 있는 보안이나 로그, 트랜잭션과 같이 비즈니스 로직은 아니지만, 반드시 처리가 필요한 부분을 스프링에서는 '횡단 관심사(cross-concern)'이라고 한다. 스프링의 AOP는 이러한 횡단 관심사를 모듈로 분리하는 패러다임이다.
+
+이를 통해서, 개발자는 1) 핵심 비즈니스 로직에만 집중해서 코드를 개발할 수 있고, 2) 각 프로젝트마다 다른 관심사를 적용할 때 코드의 수정을 최소화시킬 수 있으며, 3) 원하는 관심사의 유지보수가 수월한 코드를 구성할 수 있다.
+
+### **트랜잭션의 지원**
+
+데이터베이스를 이용할 때 반드시 신경 써야 하는 부분 중 하나는 하나의 업무가 여러 작업으로 이루어지는 경우의 트랜잭션 처리이다. 이 트랜잭션 처리는 상황에 따라 복잡하게 구성될 수 있고, 아닐 수도 있는데 그때마다 코드를 이용해서 처리하는 작업은 매우 힘든 일이다. 스프링은 이런 트랜잭션 관리를 어노테이션이나 XML로 설정 할 수 있어 개발자가 매번 상황에 맞는 코드를 작성할 필요가 없도록 설계되어있다.
 
 ## **IOC(Inversion Of Control)**
 
@@ -354,6 +173,246 @@ Class 자동차{
 ```  
 
 ![의존성 주입 O](./picture/DI사용.JPG)
+
+### **빈 등록 방법 - applicationContext.xml에 빈을 등록하는 방법** ###
+
+applicationContext.xml 파일을 resource 폴더에 만들어서 등록을 해준다.
+```
+[applicationContext.xml]
+id는 호출될 String이고, class는 연결 시킬 객체의 Class이다.
+<bean id="userBean" class="kr.or.connect.diexamo1.UserBean"/>
+
+[다른 곳에서의 사용 - main]
+public static void main(String[] args) {
+    ApplicationContext ac = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+    System.out.println("초기화 완료!!");
+    UserBean userBean = (UserBean)ac.getBean("userBean"); // id = userBean 이다. getBean의 리턴형은 Object이므로 형변환 시켜주어야 한다.
+    userBean.setAge(3);
+    System.out.println(userBean.getAge());
+}
+```
+
+Context를 통한 객체 생성은 한번 만 하므로 여러번 객체를 생성하는 것이 아니라 싱글톤 형식으로 동일한 하나의 객체를 만든다.
+따라서, 프로그램이 실행이 될때 Context는 applicationContext.xml에 등록된 빈들을 모두 메모리에 등록하고 다른 곳에서 getBean()등을 사용해서 호출하면, 메모리에 등록된 주소를 참조하여 반환한다.
+
+따라서 다른 객체를 만들어 주려면 아래와 같이 xml을 설정해야 한다.
+
+```
+[application.xml]
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="c" class="kr.or.connect.diexam01.Car">
+		<property name="engine" ref="e"></property>
+	</bean>
+</beans>
+
+[main]
+public static void main(String[] args) {
+    Engine e = new Engine();
+    Car c = new Car();
+    c.setEngine(e);
+    c.run(); 
+}
+```
+
+이처럼 프로퍼티(setter or getter)를 통하여 다른 객체로 등록이 가능하다 setEngine은 파라미터로 (Engine e)를 가지기 때문에 `ref="e"` 속성을 등록하였다.
+
+이러한 방식으로 등록을 하면 main을 위와 같은 형태가 아닌
+```
+public static void main(String[] args) {
+    ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
+    Car car = (Car)ac.getBean("c");
+    car.run();
+}
+```
+이와 같이 작성가능하다.
+
+Engine 객체와 Car객체를 생성해주지 않아도 car.run();을 실행 시킬 수 있다.
+
+![IOC를 통한 객체 주입](./picture/IOC.JPG)
+
+### **빈 등록 방법 - root-context.xml(eclipse spring MVC 프로젝트)
+
+root-context.xml의 아래쪽에 'NameSpaces' 탭의 'context' 항목을 체크한다.
+
+![root-context](./picture/Namespaces.JPG)
+
+그 후 'Source' 탭에 아래의 코드를 추가한다.
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+		<context:component-scan base-package="org.zerock.sample"></context:component-scan>
+</beans>
+```
+
+그러면 'Bean Graph' 탭에서 Restaurant와 Chef 객체가 빈으로 등록된 것을 볼 수 있다.
+
+![Brean Graph](./picture/BeanGraph.JPG)
+
+### **빈 등록 방법 - 어노테이션과 Config를 통해 빈을 등록하는 방법** ###
+
+applicationContext.xml 방식은 새로운 객체가 나올 때마다 등록해주어야하고, ApplicationContext 팩토리(객체) 역시 생성해줘야 하므로 번거롭다.   
+그래서 최근에는 어노테이션과 JAVA Config를 통한 방법을 선호한다.
+
+각각에 필요한 Config Class를 생성한다 여기서는 ApplicationConfig를 생성해준다. 그 후 이 클래스가 Config파일임을 알려주기 위해 **@Configuration 어노테이션을 사용**한다.
+
+```
+@Configuration
+public class ApplicationConfig {
+
+}
+```
+
+그 다음으론, Bean을 등록해주어야 한다.
+
+```
+@Configuration
+public class ApplicationConfig {
+    @Bean
+    public Car car(Engine e){
+        Car c = new Car();
+        c.setEngine(e);
+        return c;
+    }
+
+    @Bean
+	public Engine engine() {
+		return new Engine();
+	}
+}
+```
+
+이와 같이 등록하였다면 
+
+```
+[main]
+public static void main(String[] args) {
+    ApplicationContext ac = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+    
+    Car car = (Car)ac.getBean(Car.class);
+    car.run();
+}
+```
+처럼 사용할 수 있다.
+
+### **빈 등록 방법- Java 설정(@ComponentScan을 이용한 방법)**
+
+하지만 위와 같은 코드는 applicationContext.xml보다 편리하지 않아 보인다. 좀 더 다양한 어노테이션을 이용해 더 간결하게 바꿀 수 있다.
+
+Java 설정을 이용하면 'root-context.xml' 대신 RootConfig 클래스를 이용한다.
+
+@ComponentScan 어노테이션은 컨테이너에게 해당 패키지 내의 어노테이션들을 읽어 빈으로 등록하는 일을 한다. 따라서, 다른 지정이 안된 패키지에 @Component 어노테이션을 붙여도 인식을 하지 못한다.
+
+@ComponentScan 어노테이션이 읽는 어노테이션(= 빈이 되는 객체)
+
+- Component
+  - Controller
+  - Service
+  - Repository
+
+Controller, Service, Repository는 @Component 어노테이션을 포함하고 있다.
+
+```
+주로 ApplicationConfig 나 RootConfig로 명명하여 처리
+[ApplicationConfig.java]
+@Configuration
+@ComponentScan("kr.or.connect.diexam01")
+public class ApplicationConfig02 {
+
+}
+```
+이렇게 등록을 해주면 컨테이너가 "kr.or.connect.diexam01" 패키지 내의 클래스를 돌며 컨트롤러,서비스,레파지토리,컴포넌트 등의 어노테이션을 읽어 빈으로 등록한다.
+
+그러면 Car와 Engine 클래스도 아래 처럼 간편해진다.
+
+```
+[Engine.java]
+@Component  //Component 어노테이션
+public class Engine {
+	public Engine() {
+		System.out.println("Engine 생성자");
+	}
+	public void exec() {
+		System.out.println("엔진이 동작합니다.");
+	}
+}
+
+[Car.java]
+@Component
+public class Car {
+	@Autowired
+	private Engine v8;
+	
+	public Car() {
+		System.out.println("Car 생성자");
+	}
+	
+//	public void setEngine(Engine e) {
+//		this.v8 = e;
+//	}
+	
+	public void run() {
+		System.out.println("엔진을 이용하여 달립니다.");
+		v8.exec();
+	}
+}
+```
+Car와 Engine을 읽을 수 있도록 @Component 어노테이션을 붙이고, Setter와 Getter 메서드를 통한 객체 생성이 필요없어졌다.
+
+### **빈 꺼내는 방법 - getBean() 이용**
+
+ApplicationContext에서 직접 getBean()으로 직접 꺼내서 사용할 수 있다.
+
+```
+ApplicationContext ac = new  AnnotationConfigApplicationContext(원하는 객체.class);
+
+클래스 타입 클래스 변수 = ac.getBean();
+```
+
+### **빈 꺼내는 방법 - @Autowired 이용**
+
+@Autowired 어노테이션을 이용하여 ApplicationContext의 빈을 사용할 수 있다. 
+
+```
+@Autowired
+String kesuen;
+```
+
+### @Autowired로 의존성 주입 방법, 위치
+
+1. 생성자
+
+기본적으로 스프링은 4.3버전 이후부턴 생성자가 하나만 존재하고 또, 그 생성자에 파라미터로 등록된 빈을 받을 시 **@Autowired 어노테이션이 없어도 객체를 생성해준다.**  
+
+```
+@Controller
+class OwnerController {
+    public OwnerController(OwnerRepository clinicService) {
+    this.owner = clinicService;
+    }
+}
+```
+
+2. 필드
+
+필드에서 등록된 빈을 받을 수 있다.
+```
+@Autowired
+private final OwnerRepository owners;
+```
+
+3. Setter
+
+이 클래스에 빈에 대한 Setter가 있을 경우 필드에 @Autowired를 붙인 것보단 Setter를 통해 @Autowired로 의존성을 주입해주는 것이 좋다.
 
 ### **Spring에서 제공하는 IoC/DI 컨테이너**
 
@@ -763,12 +822,15 @@ Intellij도 web.xml이라 되어있다.
 
 ### root-context.xml
 
+
+스프링에 관한 설정파일이다.
 빈에 관한 설정을 주로 한다.
 
 인텔리 제이에선 applicationContext.xml라고 한다.
 
 ### servlet-context.xml
 
+웹과 관련된 스프링 설정파일이다.
 내부 웹 관련 처리 작업을 설정한다.
 
 Intellij 에선 dispatcher-servlet.xml라고 한다.
