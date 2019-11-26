@@ -29,7 +29,7 @@
   - [MVC Model 1 아키텍처](#mvc-model-1-아키텍처)
   - [MVC Model 2 아키텍처](#mvc-model-2-아키텍처)
   - [Spring MVC 구성요소](#spring-mvc-구성요소)
-  - [DispatcherServlet 내부 동작 흐름](#dispatcherservlet-내부-동작-흐름)
+  - [DispatcherServlet 내부 동작 흐름](#dispatche   rservlet-내부-동작-흐름)
 
 [Spring XML](#Spring-XML)  
  - [Web.xml](#webxml)
@@ -821,7 +821,6 @@ Tomcat 구동과 관련된 설정을 주로 한다.
 Intellij도 web.xml이라 되어있다.
 
 ### root-context.xml
-
 
 스프링에 관한 설정파일이다.
 빈에 관한 설정을 주로 한다.
