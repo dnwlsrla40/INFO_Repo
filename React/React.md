@@ -1,24 +1,11 @@
-# JSX
+# React
 
-JavaScript와 HTML이 합쳐진 구조로 유일하게 react가 제공하는 독단적인 기능
+## React가 나오게 된 이유
 
-# PropTypes
-
-client가 요청하는 Prop의 Type, Parameter등을 확인하는 라이브러리
-
-```
-import PropTypes from 'prop-types'; // Prop가 전송하는 데이터 check
-
-Food.propTypes = {
-  // 이름을 무조건 propTypes로 지어야함
-  // guide로 제공하는 option 확인 가능
-  // isRequired : 필수 요소
-  name : PropTypes.string.isRequired,
-  picture : PropTypes.string.isRequired,
-  rating : PropTypes.number.isRequired 
-}
-```
-라고 사용하면, name,picture,rating이 요소로 필요하고 각각의 Type을 확인하여 없거나 틀리면 브라우저 console창에 warning 발생
+1. 기존의 JS로 이벤트 핸들링을 할 경우 DOM의 특정 속성을 업데이트 해주어야 해 업데이트 규칙이 점차 복잡해짐
+2. Ember, Backbone, AngularJs등의 프레임워크로 JS의 특정 값이 바뀌면 특정 DOM의 속서이 바뀌도록 연결하여 업데이트 작업을 간소화
+3. React는 이와 다르게 상태가 변하면 상태에 따라 DOM을 업데이트하는 것이 아니라 아예 다 날려버리고 처음부터 모든 걸 새로 만듬
+->  Virtual DOM(JS 객체이기 때문에 작동 성능이 훨씬 빠름)을 이용, 상태가 업데이트 되면 Virtual DOM에 렌더링 후 비교 알고리즘을 통해 업데이트를 어떻게 할 지 정함  
 
 # State
 
