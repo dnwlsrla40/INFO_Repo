@@ -1,6 +1,10 @@
 # 링크 목록
  찾아서 공부할 링크 리스트
 
+# CS
+
+https://mangkyu.tistory.com/88
+
 # 시사
 
 # JavaScript
@@ -10,15 +14,6 @@
 # 책
 
 realmysql - SQL에 대해서 알고 싶다면 정독 추천!!
-
-
-
-
-
-
-
-
-
 
 
 plyr, 
